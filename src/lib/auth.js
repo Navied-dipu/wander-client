@@ -1,6 +1,3 @@
-import dns from "node:dns/promises";
-dns.setServers(["1.1.1.1", "8.8.8.8"]);
-
 import { betterAuth } from "better-auth";
 import { MongoClient } from "mongodb";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
@@ -26,6 +23,9 @@ export const auth = betterAuth({
       strategy: "jwt",
       maxAge: 7 * 24 * 60 * 60,
     },
+  },
+  advanced: {
+    trustHost: true,
   },
   plugins: [jwt()],
 });

@@ -11,10 +11,11 @@ import {
   TextField,
 } from "@heroui/react";
 import { authClient } from "@/lib/auth-client";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
 
 const LoginPage = () => {
+  const router = useRouter();
   const onSubmit = async (e) => {
     e.preventDefault();
 
@@ -28,7 +29,7 @@ const LoginPage = () => {
 
 
     if (data) {
-      redirect('/')
+      router.push('/')
     }
 
     if (error) {

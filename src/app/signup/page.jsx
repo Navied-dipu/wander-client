@@ -12,17 +12,18 @@ import {
   TextField,
 } from "@heroui/react";
 
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 
 const SignUpPage = () => {
+  const router = useRouter();
   const onSubmit = async (e) => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
     const user = Object.fromEntries(formData.entries());
-        console.log(user)
-    const { data, error } = await  authClient.signUp.email({
+    console.log(user)
+    const { data, error } = await authClient.signUp.email({
       email: user.email,
       password: user.password,
       name: user.name,
@@ -30,7 +31,7 @@ const SignUpPage = () => {
     });
 
     if (data) {
-      redirect("/");
+      router.push("/");
     }
 
     if (error) {
@@ -39,9 +40,9 @@ const SignUpPage = () => {
     }
   };
 
-  const handleGoogleSignin = async() => {
+  const handleGoogleSignin = async () => {
     await authClient.signIn.social({
-        provider: "google"
+      provider: "google"
     })
 
   }
@@ -113,12 +114,12 @@ const SignUpPage = () => {
           </div>
         </Form>
         <div className="flex justify-center items-center gap-3">
-            <Separator/>
-           <div className="whitespace-nowrap"> Or sign up with </div>
-              <Separator/>
-            </div>
+          <Separator />
+          <div className="whitespace-nowrap"> Or sign up with </div>
+          <Separator />
+        </div>
         <div>
-            <Button onClick={handleGoogleSignin} variant="outline" className={'w-full rounded-none'}><FcGoogle /> Sign in with Google</Button>
+          <Button onClick={handleGoogleSignin} variant="outline" className={'w-full rounded-none'}><FcGoogle /> Sign in with Google</Button>
         </div>
       </Card>
     </div>
