@@ -29,7 +29,7 @@ const AddDestinationPage = () => {
         console.log(destination);
 
         try {
-            const res = await fetch("http://localhost:5000/destinations", {
+            const res = await fetch(`${process.env.NEXT_SERVER_URL}/destinations`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

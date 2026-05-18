@@ -1,20 +1,29 @@
+import BookingCard from "@/components/BookingCard";
 import { DeleteAlert } from "@/components/DeleteAlart";
 import { EditModal } from "@/components/Edit-modals";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 import Image from "next/image";
 import { FaRegCalendar } from "react-icons/fa6";
 import { LuMapPin } from "react-icons/lu";
 
 const DEtailsPage = async ({ params }) => {
     const { id } = await params;
-
-    const res = await fetch(`http://localhost:5000/destinations/${id}`)
+    const { token } = await auth.api.getToken({
+        headers: await headers()
+    })
+    const res = await fetch(`${process.env.NEXT_SERVER_URL}/destinations/${id}`, {
+        headers: {
+            authorization: `Bearer ${token}`
+        }
+    })
     const destination = await res.json();
 
     const { imageUrl, price, destinationName, duration, country, description } =
         destination;
-   
+
     return (
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-7xl mx-auto ">
             <div className="flex  items-center gap-3 justify-end mt-5 mb-3">
                 <EditModal destination={destination} />
                 <DeleteAlert destination={destination} />
@@ -27,7 +36,7 @@ const DEtailsPage = async ({ params }) => {
                 width={800}
             />
 
-            <div className="p-2">
+            <div className="p-2 ">
                 <div className="flex items-center gap-1">
                     <LuMapPin /> <span>{country}</span>
                 </div>
@@ -50,6 +59,7 @@ const DEtailsPage = async ({ params }) => {
 
                 <p>{description}</p>
             </div>
+            <BookingCard destination={destination}></BookingCard>
         </div>
     );
 };
